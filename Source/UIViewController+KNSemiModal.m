@@ -73,45 +73,45 @@ const struct KNSemiModalOptionKeys KNSemiModalOptionKeys = {
     CATransform3D t1 = CATransform3DIdentity;
     t1.m34 = 1.0/-900;
     t1 = CATransform3DScale(t1, 0.95, 0.95, 1);
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
-        // The rotation angle is minor as the view is nearer
-        t1 = CATransform3DRotate(t1, 7.5f*M_PI/180.0f, 1, 0, 0);
-    } else {
-        t1 = CATransform3DRotate(t1, 15.0f*M_PI/180.0f, 1, 0, 0);
-    }
-    
-    CATransform3D t2 = CATransform3DIdentity;
-    t2.m34 = t1.m34;
-    double scale = [[self ym_optionOrDefaultForKey:KNSemiModalOptionKeys.parentScale] doubleValue];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
-        // Minor shift to mantai perspective
-        t2 = CATransform3DTranslate(t2, 0, [self parentTarget].frame.size.height*-0.04, 0);
-        t2 = CATransform3DScale(t2, scale, scale, 1);
-    } else {
-        t2 = CATransform3DTranslate(t2, 0, [self parentTarget].frame.size.height*-0.08, 0);
-        t2 = CATransform3DScale(t2, scale, scale, 1);
-    }
-    
+//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+//        // The rotation angle is minor as the view is nearer
+//        t1 = CATransform3DRotate(t1, 7.5f*M_PI/180.0f, 1, 0, 0);
+//    } else {
+//        t1 = CATransform3DRotate(t1, 15.0f*M_PI/180.0f, 1, 0, 0);
+//    }
+
+//    CATransform3D t2 = CATransform3DIdentity;
+//    t2.m34 = t1.m34;
+//    double scale = [[self ym_optionOrDefaultForKey:KNSemiModalOptionKeys.parentScale] doubleValue];
+//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+//        // Minor shift to mantai perspective
+//        t2 = CATransform3DTranslate(t2, 0, [self parentTarget].frame.size.height*-0.04, 0);
+//        t2 = CATransform3DScale(t2, scale, scale, 1);
+//    } else {
+//        t2 = CATransform3DTranslate(t2, 0, [self parentTarget].frame.size.height*-0.08, 0);
+//        t2 = CATransform3DScale(t2, scale, scale, 1);
+//    }
+
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
-    animation.toValue = [NSValue valueWithCATransform3D:t1];
+    animation.toValue = [NSValue valueWithCATransform3D:(_forward?t1:CATransform3DIdentity)];
 	CFTimeInterval duration = [[self ym_optionOrDefaultForKey:KNSemiModalOptionKeys.animationDuration] doubleValue];
     animation.duration = duration/2;
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
     
-    CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"transform"];
-    animation2.toValue = [NSValue valueWithCATransform3D:(_forward?t2:CATransform3DIdentity)];
-    animation2.beginTime = animation.duration;
-    animation2.duration = animation.duration;
-    animation2.fillMode = kCAFillModeForwards;
-    animation2.removedOnCompletion = NO;
-    
+//    CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"transform"];
+//    animation2.toValue = [NSValue valueWithCATransform3D:(_forward?t2:CATransform3DIdentity)];
+//    animation2.beginTime = animation.duration;
+//    animation2.duration = animation.duration;
+//    animation2.fillMode = kCAFillModeForwards;
+//    animation2.removedOnCompletion = NO;
+
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.fillMode = kCAFillModeForwards;
     group.removedOnCompletion = NO;
-    [group setDuration:animation.duration*2];
-    [group setAnimations:[NSArray arrayWithObjects:animation,animation2, nil]];
+    [group setDuration:animation.duration];
+    [group setAnimations:[NSArray arrayWithObjects:animation, nil]];
     return group;
 }
 
