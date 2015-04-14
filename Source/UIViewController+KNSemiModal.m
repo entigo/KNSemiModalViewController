@@ -72,7 +72,7 @@ const struct KNSemiModalOptionKeys KNSemiModalOptionKeys = {
     // Create animation keys, forwards and backwards
     CATransform3D t1 = CATransform3DIdentity;
     t1.m34 = 1.0/-900;
-    t1 = CATransform3DScale(t1, 0.95, 0.95, 1);
+    t1 = CATransform3DScale(t1, 0.93, 0.93, 1);
 //    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
 //        // The rotation angle is minor as the view is nearer
 //        t1 = CATransform3DRotate(t1, 7.5f*M_PI/180.0f, 1, 0, 0);
